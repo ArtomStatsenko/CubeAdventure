@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
+using System;
 
 public sealed class PlayerController
 {
+    public event Action OnShieldActivatedEvent;
+
     private PlayerModel _model;
     private PlayerView _view;
     private Movement _movement;
@@ -18,18 +21,19 @@ public sealed class PlayerController
     public void OnEnable()
     {
         _view.OnPlayerPausedEvent += SetPause;
-        _view.OnDiedEvent += StartPause;
-        _view.OnRespawnEvent += SpawnPlayer;
+        _view.OnDiedEvent += Die;
+        OnShieldActivatedEvent += _view.ActivateShield;
+    }
+
+    private void Die()
+    {
+        SetPause(true);
+        SpawnPlayer();
     }
 
     public void Execute()
     {
         _movement.Move(_isPaused);
-    }
-
-    private void StartPause()
-    {
-        SetPause(true);
     }
 
     private void SetPause(bool isPaused)
@@ -40,9 +44,13 @@ public sealed class PlayerController
     private void SpawnPlayer()
     {
         _view = _spawner.Spawn();
-        _view.PauseTime = _model.StartPauseTime;
-        _view.Init();
+        _view.Init(_model.DefaultMaterial, _model.ShieldMaterial);
         _movement = new Movement(_view.NavMeshAgent, _model.MoveSpeed, _model.TurnSpeed);
         OnEnable();
+    }
+
+    public void ActivateShield()
+    {
+        OnShieldActivatedEvent?.Invoke();
     }
 }
