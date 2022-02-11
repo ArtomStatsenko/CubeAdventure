@@ -4,22 +4,19 @@ public sealed class GameController : MonoBehaviour
 {
     [SerializeField] private Transform _playerSpawnPoint;
     [SerializeField] private PlayerData _playerData;
+    [SerializeField] private GameObject _deadZone;
+    [SerializeField] private GameObject _floor;
+    [SerializeField] private GameObject _greenZone;
+    [SerializeField] private GameObject _wall;
 
-    private Spawner _spawner;
     private PlayerController _player;
     private LevelCreator _levelCreator;
 
     private void Start()
-    {
-        _spawner = new Spawner(_playerSpawnPoint);
+    {      
+        _player = new PlayerController(_playerData, _playerSpawnPoint);
 
-        PlayerView playerView = _spawner.SpawnPlayer(_playerData.Prefab);
-        _player = new PlayerController(_playerData, playerView);
-        _player.OnEnable();
-
-        _player.OnPlayerRespawnEvent += _spawner.RespawnPlayer;
-
-        _levelCreator = new LevelCreator();
+        _levelCreator = new LevelCreator(_deadZone, _floor, _greenZone, _wall);
         _levelCreator.CreateEnvironment();
     }
 
