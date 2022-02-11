@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public sealed class PlayerController
 {
@@ -32,7 +31,7 @@ public sealed class PlayerController
     {
         SetPause(true);
     }
-       
+
     private void SetPause(bool isPaused)
     {
         _isPaused = isPaused;

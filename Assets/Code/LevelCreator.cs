@@ -54,13 +54,7 @@ public sealed class LevelCreator
     public void CreateEnvironment()
     {
         CreateGreenZone();
-        CreateInternalWalls();
         CreateDeadZones();       
-    }
-
-    private void CreateInternalWalls()
-    {
-       
     }
 
     private void CreateGreenZone()
