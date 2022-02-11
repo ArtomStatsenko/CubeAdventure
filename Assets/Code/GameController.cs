@@ -2,26 +2,25 @@ using UnityEngine;
 
 public sealed class GameController : MonoBehaviour
 {
-    [SerializeField] private Transform _playerStartPoint;
+    [SerializeField] private Transform _playerSpawnPoint;
     [SerializeField] private PlayerData _playerData;
 
+    private Spawner _spawner;
     private PlayerController _player;
+    private LevelCreator _levelCreator;
 
     private void Start()
     {
-        PlayerModel playerModel = new PlayerModel(_playerData);
-        GameObject _playerGameObject = Instantiate(_playerData.Prefab);
-        _playerGameObject.transform.position = _playerStartPoint.position;
-        _playerGameObject.transform.rotation = _playerStartPoint.rotation;
+        _spawner = new Spawner(_playerSpawnPoint);
 
-        if (_playerGameObject.TryGetComponent(out PlayerView playerView))
-        {
-            _player = new PlayerController(playerModel, playerView);
-        }
-        else
-        {
-            Debug.Log("PlayerView script is missing...");
-        }
+        PlayerView playerView = _spawner.SpawnPlayer(_playerData.Prefab);
+        _player = new PlayerController(_playerData, playerView);
+        _player.OnEnable();
+
+        _player.OnPlayerRespawnEvent += _spawner.RespawnPlayer;
+
+        _levelCreator = new LevelCreator();
+        _levelCreator.CreateEnvironment();
     }
 
     private void Update()

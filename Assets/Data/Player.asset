@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f3c0295ec7f3a34da3014b240d0a926, type: 3}
   m_Name: Player
   m_EditorClassIdentifier: 
-  _speed: 3
+  _moveSpeed: 5
+  _turnSpeed: 2.5
   _shieldTime: 2
   _startPauseTime: 2
   _defaultMaterial: {fileID: 2100000, guid: 71a68df56cb298049a4d1599d82df9dc, type: 2}
