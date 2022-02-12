@@ -3,14 +3,13 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public sealed class GameController : MonoBehaviour
+public sealed class GameStarter : MonoBehaviour
 {
     [SerializeField] private Transform _playerSpawnPoint;
     [SerializeField] private PlayerData _playerData;
     [SerializeField] private GameObject _deadZone;
     [SerializeField] private GameObject _floor;
     [SerializeField] private GameObject _greenZone;
-    [SerializeField] private GameObject _wall;
     [SerializeField] private Button _shieldButton;
 
     private PlayerController _player;
@@ -19,17 +18,12 @@ public sealed class GameController : MonoBehaviour
 
     private void Start()
     {      
+        _levelCreator = new LevelCreator(_deadZone, _floor, _greenZone);
+        _levelCreator.CreateEnvironment();
+
         _player = new PlayerController(_playerData, _playerSpawnPoint);
         _shieldButton.onClick.AddListener(_player.ActivateShield);
         _shieldButton.onClick.AddListener(DisableButton);
-
-        _levelCreator = new LevelCreator(_deadZone, _floor, _greenZone, _wall);
-        _levelCreator.CreateEnvironment();
-    }
-
-    private void Update()
-    {
-        _player.Execute();
     }
 
     private void DisableButton()

@@ -5,30 +5,38 @@ using UnityEngine.AI;
 
 public sealed class PlayerView : MonoBehaviour
 {
-    public event Action<bool> OnPlayerPausedEvent;
     public event Action OnDiedEvent;
 
-    [SerializeField] GameObject _deathEffect;
+    [SerializeField] private Material _shieldMaterial;
+    [SerializeField]  private Material _defaultMaterial;
 
     private float _pauseTime = 2f;
     private float _deathTime = 2f;
-    private float _effectTime = 3f;
     private float _shieldTime = 2f;
     private bool _isShieldActive;
-    private Material _shieldMaterial;
-    private Material _defaultMaterial;
     private Renderer _renderer;
+    private bool _isDead;
+    private int _deathEffectCubesQuantity = 10;
+    private float _deathEffectCubeSize = 0.2f;
 
     public NavMeshAgent NavMeshAgent => gameObject.GetOrAddComponent<NavMeshAgent>();
 
-    public void Init(Material defaultMateial, Material shieldMaterial)
+    public void Start()
     {
-        _defaultMaterial = defaultMateial;
-        _shieldMaterial = shieldMaterial;
         _renderer = GetComponent<Renderer>();
         gameObject.GetOrAddComponent<Rigidbody>();
         _isShieldActive = false;
-        StartPause();
+        _isDead = false;
+
+        StartCoroutine(nameof(PauseTimer));
+    }
+
+    private IEnumerator PauseTimer()
+    {
+        NavMeshAgent.isStopped = true;
+        yield return new WaitForSecondsRealtime(_pauseTime);
+        NavMeshAgent.isStopped = false;
+        StopCoroutine(nameof(PauseTimer));
     }
 
     public void ActivateShield()
@@ -43,40 +51,49 @@ public sealed class PlayerView : MonoBehaviour
         yield return new WaitForSecondsRealtime(_shieldTime);
         _isShieldActive = false;
         _renderer.material = _defaultMaterial;
-    }
-
-    private void StartPause()
-    {
-        OnPlayerPausedEvent?.Invoke(true);
-        StartCoroutine(nameof(Pause));
-    }
-
-    private IEnumerator Pause()
-    {
-        yield return new WaitForSecondsRealtime(_pauseTime);
-        OnPlayerPausedEvent?.Invoke(false);
-        StopCoroutine(nameof(Pause));
+        StopCoroutine(nameof(ShieldTimer));
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.TryGetComponent<ExitMarker>(out _))
+        if (other.gameObject.TryGetComponent<ExitMarker>(out _) && !_isDead)
         {
-            OnDiedEvent?.Invoke();
-            Destroy(gameObject);
+            Die();
         }
-        else if (other.gameObject.TryGetComponent<DeadZoneMarker>(out _) && !_isShieldActive)
+        
+        if (other.gameObject.TryGetComponent<DeadZoneMarker>(out _) && !_isShieldActive && !_isDead)
         {
             CreateDeathEffect();
-            OnDiedEvent?.Invoke();
-            Destroy(gameObject);
+            Die();
         }
+    }
+
+    private void Die()
+    {
+        StartCoroutine(nameof(CallDiedEvent));
+        NavMeshAgent.isStopped = true;
+        _renderer.enabled = false;
+        _isDead = true;
+    }
+
+    private IEnumerator CallDiedEvent()
+    {
+        yield return new WaitForSecondsRealtime(_deathTime);
+        _isDead = false;
+        Destroy(gameObject);
+        OnDiedEvent?.Invoke();
     }
 
     private void CreateDeathEffect()
     {
-        var effect = Instantiate(_deathEffect);
-        effect.transform.position = gameObject.transform.position;
-        Destroy(effect, _effectTime);
+        for (var i = 0; i < _deathEffectCubesQuantity; i++)
+        {
+            GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube.transform.position = gameObject.transform.position;
+            cube.transform.localScale = Vector3.one * _deathEffectCubeSize;
+            cube.GetOrAddComponent<Rigidbody>();
+            cube.GetComponent<Renderer>().material = _defaultMaterial;
+            Destroy(cube, _deathTime);
+        }
     }
 }

@@ -6,21 +6,20 @@ public sealed class LevelCreator
     private Vector3[,] _levelGrid;
     private int _deadZoneQuantity = 3;
     private GameObject _deadZonePrefab;
-    private float _yPosition = 0.1f;
+    private float _yPosition = 0.2f;
     private int _sideWallQuantity = 2;
     private List<Vector3> _occupiedPoints;
     private GameObject _greenZone;
-    private int _greenZoneX = 8;
-    private int _greenZoneZ = 8;
-    private GameObject _wallPrefab;
+    private Vector3 _greenZonePosition = new Vector3(8f, 0.2f, 8f);
+    private Vector3 _playerPosition = new Vector3(2f, 1f, 2f);
 
-    public LevelCreator(GameObject deadZone, GameObject floor, GameObject greenZone, GameObject wall)
+    public LevelCreator(GameObject deadZone, GameObject floor, GameObject greenZone)
     {
         _deadZonePrefab = deadZone;
         _greenZone = greenZone;
-        _wallPrefab = wall;
         var floorScale = floor.transform.localScale;
         _occupiedPoints = new List<Vector3>();
+        _occupiedPoints.Add(_playerPosition);
 
         CreateLevelGrid(floorScale.x, floorScale.z);
     }
@@ -31,10 +30,10 @@ public sealed class LevelCreator
         int rows = Mathf.RoundToInt(floorScaleZ) - _sideWallQuantity;
         _levelGrid = new Vector3[columns, rows];
 
-        int startX = (-columns / 2) + 1;
-        int startZ = (-rows / 2) + 1;
-        int endX = _levelGrid.GetLength(0) - 1;
-        int endZ = _levelGrid.GetLength(1) - 1;
+        int startX = (-columns / 2) + 4;
+        int startZ = (-rows / 2) + 4;
+        int endX = _levelGrid.GetLength(0) - 2;
+        int endZ = _levelGrid.GetLength(1) - 2;
         int currentX = startX;
         int currentZ = startZ;
 
@@ -59,10 +58,9 @@ public sealed class LevelCreator
 
     private void CreateGreenZone()
     {
-        Vector3 point = new Vector3(_greenZoneX, _yPosition, _greenZoneZ);
         GameObject greenZone = Object.Instantiate(_greenZone);
-        greenZone.transform.position = point;
-        _occupiedPoints.Add(point);
+        greenZone.transform.position = _greenZonePosition;
+        _occupiedPoints.Add(_greenZonePosition);
     }
 
     private void CreateDeadZones()
