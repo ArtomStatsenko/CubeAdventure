@@ -11,12 +11,4 @@ public static class Extentions
 
         return result;
     }
-
-    public static Vector3 GetRandomPoint(this Vector3[,] grid)
-    {
-        var x = Random.Range(0, grid.GetLength(0));
-        var y = Random.Range(0, grid.GetLength(1));
-        Vector3 result = grid[x, y];
-        return result;
-    }
 }

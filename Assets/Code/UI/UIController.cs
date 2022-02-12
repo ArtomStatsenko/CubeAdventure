@@ -7,11 +7,13 @@ public sealed class UIController : MonoBehaviour
 {
     public event Action OnPausedEvent;
     public event Action OnResumedEvent;
+    public event Action OnRestartedEvent;
 
     [SerializeField] private Button _shieldButton;
     [SerializeField] private Button _pauseButton;
     [SerializeField] private Button _resumeButton;
     [SerializeField] private Button _exitButton;
+    [SerializeField] private Button _restartButton;
     [SerializeField] private GameObject _pauseMenuPanel;
     
     private float _buttonDisableTime = 2f;
@@ -31,6 +33,12 @@ public sealed class UIController : MonoBehaviour
         _resumeButton.onClick.AddListener(Resume);
         _resumeButton.onClick.AddListener(ClosePauseMenu);
         _exitButton.onClick.AddListener(Quit);
+        _restartButton.onClick.AddListener(Restart);
+    }
+
+    private void Restart()
+    {
+        OnRestartedEvent?.Invoke();
     }
 
     private void OnDisable()
@@ -41,6 +49,7 @@ public sealed class UIController : MonoBehaviour
         _resumeButton.onClick.RemoveListener(Resume);
         _resumeButton.onClick.RemoveListener(ClosePauseMenu);
         _exitButton.onClick.RemoveListener(Quit);
+        _restartButton.onClick.RemoveListener(Restart);
     }
 
 

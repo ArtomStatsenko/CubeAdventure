@@ -3,28 +3,20 @@
 public sealed class PlayerSpawner
 {
     private GameObject _prefab;
-    private Transform _spawnPoint;
+    private Vector3 _spawnPosition;
 
-    public PlayerSpawner(GameObject prefab, Transform spawnPoint)
+    public PlayerSpawner(GameObject prefab, Vector3 spawnPosition)
     {
         _prefab = prefab;
-        _spawnPoint = spawnPoint;
+        _spawnPosition = spawnPosition;
     }
 
     public PlayerView Spawn()
     {
         GameObject player = Object.Instantiate(_prefab);
-        player.transform.position = _spawnPoint.position;
-        player.transform.rotation = _spawnPoint.rotation;
-
-        if (player.TryGetComponent(out PlayerView view))
-        {
-            return view;
-        }
-        else
-        {
-            Debug.Log("PlayerView script is missing...");
-            return null;
-        }
+        player.transform.position = _spawnPosition;
+        player.transform.rotation = Quaternion.identity;
+        var view = player.GetOrAddComponent<PlayerView>();
+        return view;
     }
 }

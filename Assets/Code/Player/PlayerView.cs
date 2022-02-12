@@ -17,8 +17,9 @@ public sealed class PlayerView : MonoBehaviour
     private bool _isDead;
     private int _deathEffectCubesQuantity = 10;
     private float _deathEffectCubeSize = 0.2f;
+    private float _deathEffectCubesPositionY = 2f;
 
-    public NavMeshAgent NavMeshAgent => gameObject.GetOrAddComponent<NavMeshAgent>();
+    public NavMeshAgent NavMesh => gameObject.GetOrAddComponent<NavMeshAgent>();
 
     public void Start()
     {
@@ -41,9 +42,9 @@ public sealed class PlayerView : MonoBehaviour
 
     private IEnumerator PauseTimer()
     {
-        NavMeshAgent.isStopped = true;
+        NavMesh.isStopped = true;
         yield return new WaitForSecondsRealtime(_pauseTime);
-        NavMeshAgent.isStopped = false;
+        NavMesh.isStopped = false;
         StopCoroutine(nameof(PauseTimer));
     }
 
@@ -64,11 +65,6 @@ public sealed class PlayerView : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.TryGetComponent<Exit>(out _) && !_isDead)
-        {
-            Die();
-        }
-
         if (other.gameObject.TryGetComponent<DeadZoneMarker>(out _) && !_isShieldActive && !_isDead)
         {
             CreateDeathEffect();
@@ -76,12 +72,15 @@ public sealed class PlayerView : MonoBehaviour
         }
     }
 
-    private void Die()
+    public void Die()
     {
-        StartCoroutine(nameof(CallDiedEvent));
-        NavMeshAgent.isStopped = true;
-        _renderer.enabled = false;
-        _isDead = true;
+        if (!_isDead)
+        {
+            StartCoroutine(nameof(CallDiedEvent));
+            NavMesh.isStopped = true;
+            _renderer.enabled = false;
+            _isDead = true;
+        }
     }
 
     private IEnumerator CallDiedEvent()
@@ -97,7 +96,8 @@ public sealed class PlayerView : MonoBehaviour
         for (var i = 0; i < _deathEffectCubesQuantity; i++)
         {
             GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            cube.transform.position = gameObject.transform.position;
+            var position = gameObject.transform.position;
+            cube.transform.position = new Vector3(position.x, _deathEffectCubesPositionY, position.z) ;
             cube.transform.localScale = Vector3.one * _deathEffectCubeSize;
             cube.GetOrAddComponent<Rigidbody>();
             cube.GetComponent<Renderer>().material = _defaultMaterial;

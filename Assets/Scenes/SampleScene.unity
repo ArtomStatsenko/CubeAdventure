@@ -122,7 +122,7 @@ NavMeshSettings:
     preserveTilesOutsideBounds: 0
     debug:
       m_Flags: 0
-  m_NavMeshData: {fileID: 23800000, guid: 3dd63c96710d8ea47b983cbaf24a5baf, type: 2}
+  m_NavMeshData: {fileID: 0}
 --- !u!1 &247431343
 GameObject:
   m_ObjectHideFlags: 0
@@ -1455,6 +1455,36 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1286140740}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1329863788
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1329863789}
+  m_Layer: 0
+  m_Name: Environment
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1329863789
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1329863788}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1360755181
 GameObject:
   m_ObjectHideFlags: 0
@@ -1932,8 +1962,11 @@ MonoBehaviour:
   _floor: {fileID: 1746115130}
   _deadZone: {fileID: 805490487741489638, guid: 30f45143c15149d44af6c7a400622047, type: 3}
   _greenZone: {fileID: 805490487741489638, guid: fcf42d6085366d942afee39219988dcf, type: 3}
+  _wallPrefab: {fileID: 805490487741489638, guid: ce067896197bed046aa2497fc5178410, type: 3}
   _ui: {fileID: 1691783847}
   _animator: {fileID: 878974195}
+  _wallMaterial: {fileID: 2100000, guid: 2cbb4b9598e894c4b80743131ca501ab, type: 2}
+  _environmentRoot: {fileID: 1329863788}
 --- !u!4 &1468937341
 Transform:
   m_ObjectHideFlags: 0
@@ -2182,7 +2215,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &1746115131
 BoxCollider:
   m_ObjectHideFlags: 0

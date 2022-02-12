@@ -10,10 +10,10 @@ public sealed class PlayerController
     private Movement _movement;
     private PlayerSpawner _spawner;
 
-    public PlayerController(PlayerData data, Transform spawnPoint)
+    public PlayerController(PlayerData data, Vector3 spawnPosition)
     {
         _model = new PlayerModel(data);
-        _spawner = new PlayerSpawner(data.Prefab, spawnPoint);
+        _spawner = new PlayerSpawner(data.Prefab, spawnPosition);
         SpawnPlayer();
     }
 
@@ -34,11 +34,16 @@ public sealed class PlayerController
         SpawnPlayer();
     }
 
+    public void KillPlayer()
+    {
+        _view.Die();
+    }
+
     private void SpawnPlayer()
     {
         _view = _spawner.Spawn();
         _view.Init(_model);
-        _movement = new Movement(_view.NavMeshAgent, _model.MoveSpeed, _model.TurnSpeed);
+        _movement = new Movement(_view.NavMesh, _model.MoveSpeed, _model.TurnSpeed);
         _movement.SetDestination();
         OnEnable();
     }
