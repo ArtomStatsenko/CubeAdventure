@@ -2,6 +2,8 @@
 
 public sealed class AnimatorController
 {
+    private const string START = "Start";
+    private const string END = "End";
     private Animator _animator;
 
     public AnimatorController(Animator animator)
@@ -11,11 +13,11 @@ public sealed class AnimatorController
 
     public void PlayStartTransition()
     {
-        _animator.SetTrigger("Start");
+        _animator.SetTrigger(START);
     }
 
     public void PlayEndTransition()
     {
-        _animator.SetTrigger("End");
+        _animator.SetTrigger(END);
     }
 }
