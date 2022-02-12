@@ -14,7 +14,7 @@ public sealed class Movement
         _navMeshAgent.speed = moveSpeed;
         _navMeshAgent.angularSpeed = turnSpeed * _turnSpeedParam;
         _navMeshAgent.acceleration = _acceleration;
-        _exitPoint = Object.FindObjectOfType<ExitMarker>().transform;
+        _exitPoint = Object.FindObjectOfType<Exit>().transform;
     }
 
     public void SetDestination()
@@ -22,8 +22,13 @@ public sealed class Movement
         _navMeshAgent.destination = _exitPoint.position;
     }
 
-    //public void Move(bool isPaused)
-    //{
-    //    _navMeshAgent.isStopped = isPaused;
-    //}
+    public void EnableMovement()
+    {
+        _navMeshAgent.isStopped = false;
+    }
+
+    public void DisableMovement()
+    {
+        _navMeshAgent.isStopped = true;
+    }
 }

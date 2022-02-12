@@ -1,7 +1,10 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
-public sealed class ExitMarker : MonoBehaviour
+public sealed class Exit : MonoBehaviour
 {
+    public event Action OnVictoryEvent;
+
     [SerializeField] private GameObject _victoryEffect;
 
     private float _effectTime = 3f;
@@ -12,6 +15,7 @@ public sealed class ExitMarker : MonoBehaviour
         if (other.gameObject.TryGetComponent<PlayerView>(out _))
         {
             CreateVictoryEffect();
+            OnVictoryEvent?.Invoke();
         }
     }
 

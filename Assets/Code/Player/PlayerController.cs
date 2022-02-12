@@ -37,6 +37,7 @@ public sealed class PlayerController
     private void SpawnPlayer()
     {
         _view = _spawner.Spawn();
+        _view.Init(_model);
         _movement = new Movement(_view.NavMeshAgent, _model.MoveSpeed, _model.TurnSpeed);
         _movement.SetDestination();
         OnEnable();
@@ -45,5 +46,16 @@ public sealed class PlayerController
     public void ActivateShield()
     {
         OnShieldActivatedEvent?.Invoke();
+    }
+
+    public void EnableMovement()
+    {
+        _movement.EnableMovement();
+    }
+
+    public void DisableMovement()
+    {
+        _movement.DisableMovement();
+
     }
 }

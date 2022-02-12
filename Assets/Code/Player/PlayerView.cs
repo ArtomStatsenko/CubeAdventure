@@ -7,12 +7,11 @@ public sealed class PlayerView : MonoBehaviour
 {
     public event Action OnDiedEvent;
 
-    [SerializeField] private Material _shieldMaterial;
-    [SerializeField]  private Material _defaultMaterial;
-
-    private float _pauseTime = 2f;
-    private float _deathTime = 2f;
-    private float _shieldTime = 2f;
+    private Material _shieldMaterial;
+    private Material _defaultMaterial;
+    private float _pauseTime;
+    private float _deathTime;
+    private float _shieldTime;
     private bool _isShieldActive;
     private Renderer _renderer;
     private bool _isDead;
@@ -29,6 +28,15 @@ public sealed class PlayerView : MonoBehaviour
         _isDead = false;
 
         StartCoroutine(nameof(PauseTimer));
+    }
+
+    public void Init(PlayerModel model)
+    {
+        _pauseTime = model.StartPauseTime;
+        _deathTime = model.DeathTime;
+        _shieldTime = model.ShieldTime;
+        _shieldMaterial = model.ShieldMaterial;
+        _defaultMaterial = model.DefaultMaterial;
     }
 
     private IEnumerator PauseTimer()
@@ -56,11 +64,11 @@ public sealed class PlayerView : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.TryGetComponent<ExitMarker>(out _) && !_isDead)
+        if (other.gameObject.TryGetComponent<Exit>(out _) && !_isDead)
         {
             Die();
         }
-        
+
         if (other.gameObject.TryGetComponent<DeadZoneMarker>(out _) && !_isShieldActive && !_isDead)
         {
             CreateDeathEffect();
