@@ -4,27 +4,19 @@ using UnityEngine.AI;
 public sealed class MazeConstructor
 {
     private const string TAG = "Generated";
+    private const string ROOT = "Maze";
     private MazeDataGenerator _dataGenerator;
     private GameObject _wallPrefab;
     private GameObject _greenZonePrefab;
     private GameObject _deadZonePrefab;
-    private int _startRow;
-    private int _startColumn;
-    private int _goalRow;
-    private int _goalColumn;
+    private GameObject _root;
     private int[,] _data;
     private float _zonePositionY = 0.5f;
     private float _wallPositionY = 1f;
     private float _playerPositionY = 2f;
+    private Vector3 _playerSpawnPosition;
 
-    public Vector3 PlayerSpawnPosition
-    {
-        get 
-        {
-            _data[_startRow, _startColumn] = 1;
-            return new Vector3(_startRow, _playerPositionY, _startColumn); 
-        }
-    }
+    public Vector3 PlayerSpawnPosition => _playerSpawnPosition;
 
     public void Init(GameObject wallPrefab, GameObject greenZonePrefab, GameObject deadZonePrefab)
     {
@@ -32,6 +24,7 @@ public sealed class MazeConstructor
         _greenZonePrefab = greenZonePrefab;
         _deadZonePrefab = deadZonePrefab;
         _dataGenerator = new MazeDataGenerator();
+        _root = new GameObject(ROOT);
     }
 
     public void GenerateNewMaze(int sizeRows, int sizeColumns, int deadZoneQuantity)
@@ -39,9 +32,6 @@ public sealed class MazeConstructor
         DisposeOldMaze();
 
         _data = _dataGenerator.FromDimension(sizeRows, sizeColumns);
-
-        FindStartPosition();
-        FindGoalPosition();
 
         for (var i = 0; i < sizeRows; i++)
         {
@@ -56,19 +46,24 @@ public sealed class MazeConstructor
                 wall.transform.position = new Vector3(i, _wallPositionY, j);
                 wall.tag = TAG;
                 wall.AddComponent<NavMeshObstacle>();
+                wall.transform.parent = _root.transform;
+                _data[i, j] = 1;
             }
         }
 
+        _playerSpawnPosition = FindStartPosition(_data.GetUpperBound(0), _data.GetUpperBound(1));
+
         var greenZone = Object.Instantiate(_greenZonePrefab);
-        greenZone.transform.position = new Vector3(_goalRow, _zonePositionY, _goalColumn);
+        greenZone.transform.position = FindGoalPosition(_data.GetUpperBound(0), _data.GetUpperBound(1));
         greenZone.tag = TAG;
-        _data[_goalRow, _goalColumn] = 1;
+        greenZone.transform.parent = _root.transform;
 
         for (var i = 0; i < deadZoneQuantity; i++)
         {
             var deadZone = Object.Instantiate(_deadZonePrefab);
             deadZone.transform.position = FindRandomAvailablePosition();
             deadZone.tag = TAG;
+            deadZone.transform.parent = _root.transform;
         }
     }
 
@@ -81,44 +76,38 @@ public sealed class MazeConstructor
         }
     }
 
-    private void FindStartPosition()
-    {
-        int[,] maze = _data;
-        int rowMax = maze.GetUpperBound(0);
-        int columnMax = maze.GetUpperBound(1);
-
+    private Vector3 FindStartPosition(int rowMax, int columnMax)
+    {    
         for (int i = 0; i <= rowMax; i++)
         {
             for (int j = 0; j <= columnMax; j++)
             {
-                if (maze[i, j] == 0)
+                if (_data[i, j] == 0)
                 {
-                    _startRow = i;
-                    _startColumn = j;
-                    return;
+                    _data[i, j] = 1;
+                    return new Vector3(i, _playerPositionY, j);
                 }
             }
         }
+
+        return Vector3.zero;
     }
 
-    private void FindGoalPosition()
+    private Vector3 FindGoalPosition(int rowMax , int columnMax)
     {
-        int[,] maze = _data;
-        int rowMax = maze.GetUpperBound(0);
-        int columnMax = maze.GetUpperBound(1);
-
         for (int i = rowMax; i >= 0; i--)
         {
             for (int j = columnMax; j >= 0; j--)
             {
-                if (maze[i, j] == 0)
+                if (_data[i, j] == 0)
                 {
-                    _goalRow = i;
-                    _goalColumn = j;
-                    return;
+                    _data[i, j] = 1;
+                    return new Vector3(i, _zonePositionY, j);
                 }
             }
         }
+
+        return Vector3.zero;
     }
 
     private Vector3 FindRandomAvailablePosition()

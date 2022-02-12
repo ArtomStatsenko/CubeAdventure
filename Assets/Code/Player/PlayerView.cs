@@ -9,15 +9,15 @@ public sealed class PlayerView : MonoBehaviour
 
     private Material _shieldMaterial;
     private Material _defaultMaterial;
+    private Renderer _renderer;
     private float _pauseTime;
     private float _deathTime;
     private float _shieldTime;
-    private bool _isShieldActive;
-    private Renderer _renderer;
-    private bool _isDead;
-    private int _deathEffectCubesQuantity = 10;
     private float _deathEffectCubeSize = 0.2f;
     private float _deathEffectCubesPositionY = 2f;
+    private int _deathEffectCubesQuantity = 10;
+    private bool _isDead;
+    private bool _isShieldActive;
 
     public NavMeshAgent NavMesh => gameObject.GetOrAddComponent<NavMeshAgent>();
 

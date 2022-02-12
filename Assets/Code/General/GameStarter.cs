@@ -62,7 +62,6 @@ public sealed class GameStarter : MonoBehaviour
         { 
             yield return new WaitForSecondsRealtime(_enjoyVictoryTime); 
         }
-        else yield return null;
 
         _animatorController.PlayStartTransition();
         yield return new WaitForSecondsRealtime(_animationTime); 

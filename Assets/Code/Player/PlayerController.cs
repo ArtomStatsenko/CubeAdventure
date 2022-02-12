@@ -7,8 +7,8 @@ public sealed class PlayerController
 
     private PlayerModel _model;
     private PlayerView _view;
-    private Movement _movement;
     private PlayerSpawner _spawner;
+    private Movement _movement;
 
     public PlayerController(PlayerData data, Vector3 spawnPosition)
     {

@@ -16,8 +16,8 @@ public sealed class UIController : MonoBehaviour
     [SerializeField] private Button _restartButton;
     [SerializeField] private GameObject _pauseMenuPanel;
     
-    private float _buttonDisableTime = 2f;
     private PlayerController _playerController;
+    private float _buttonDisableTime = 2f;
 
     public void Init(PlayerController playerController)
     {

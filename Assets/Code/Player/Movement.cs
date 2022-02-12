@@ -3,7 +3,7 @@ using UnityEngine.AI;
 
 public sealed class Movement
 {
-    NavMeshAgent _navMeshAgent;
+    private NavMeshAgent _navMeshAgent;
     private float _turnSpeedParam = 100f;
     private float _acceleration = 50f;
 
