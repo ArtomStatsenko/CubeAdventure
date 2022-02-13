@@ -3,7 +3,7 @@ using System;
 
 public sealed class PlayerController
 {
-    public event Action OnShieldActivatedEvent;
+    public event Action<bool> OnShieldEnabledEvent;
 
     private PlayerModel _model;
     private PlayerView _view;
@@ -20,12 +20,12 @@ public sealed class PlayerController
     public void OnEnable()
     {
         _view.OnDiedEvent += Die;
-        OnShieldActivatedEvent += _view.ActivateShield;
+        OnShieldEnabledEvent += _view.EnableShield;
     }
     public void OnDisable()
     {
         _view.OnDiedEvent -= Die;
-        OnShieldActivatedEvent -= _view.ActivateShield;
+        OnShieldEnabledEvent -= _view.EnableShield;
     }
 
     private void Die()
@@ -48,9 +48,9 @@ public sealed class PlayerController
         OnEnable();
     }
 
-    public void ActivateShield()
+    public void EnableShield(bool isEnabled)
     {
-        OnShieldActivatedEvent?.Invoke();
+        OnShieldEnabledEvent?.Invoke(isEnabled);
     }
 
     public void EnableMovement()

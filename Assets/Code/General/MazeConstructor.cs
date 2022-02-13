@@ -11,7 +11,7 @@ public sealed class MazeConstructor
     private GameObject _deadZonePrefab;
     private GameObject _root;
     private int[,] _data;
-    private float _zonePositionY = 0.5f;
+    private float _zonePositionY = 0.3f;
     private float _wallPositionY = 1f;
     private float _playerPositionY = 2f;
     private Vector3 _playerSpawnPosition;

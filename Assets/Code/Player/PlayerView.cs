@@ -48,19 +48,37 @@ public sealed class PlayerView : MonoBehaviour
         StopCoroutine(nameof(PauseTimer));
     }
 
-    public void ActivateShield()
+    public void EnableShield(bool isEnabled)
     {
-        StartCoroutine(nameof(ShieldTimer));
+        if (isEnabled)
+        {
+            ActivateShield();
+            StartCoroutine(nameof(ShieldTimer));
+        }
+        else
+        {
+            StopCoroutine(nameof(ShieldTimer));
+            DisactivateShield();
+        }
     }
 
     private IEnumerator ShieldTimer()
     {
-        _isShieldActive = true;
-        _renderer.material = _shieldMaterial;
         yield return new WaitForSecondsRealtime(_shieldTime);
+        DisactivateShield();
+        StopCoroutine(nameof(ShieldTimer));
+    }
+
+    private void DisactivateShield()
+    {
         _isShieldActive = false;
         _renderer.material = _defaultMaterial;
-        StopCoroutine(nameof(ShieldTimer));
+    }
+
+    private void ActivateShield()
+    {
+        _isShieldActive = true;
+        _renderer.material = _shieldMaterial;
     }
 
     private void OnTriggerEnter(Collider other)

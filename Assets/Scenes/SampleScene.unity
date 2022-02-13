@@ -637,6 +637,7 @@ GameObject:
   - component: {fileID: 442606469}
   - component: {fileID: 442606468}
   - component: {fileID: 442606467}
+  - component: {fileID: 442606471}
   m_Layer: 5
   m_Name: ShieldButton
   m_TagString: Untagged
@@ -746,6 +747,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 442606465}
   m_CullTransparentMesh: 1
+--- !u!114 &442606471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 442606465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 2
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1691783847}
+          m_TargetAssemblyTypeName: UIController, Assembly-CSharp
+          m_MethodName: OnPointerDownShieldButton
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 3
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1691783847}
+          m_TargetAssemblyTypeName: UIController, Assembly-CSharp
+          m_MethodName: OnPointerUpShieldButton
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &557157049
 GameObject:
   m_ObjectHideFlags: 0
@@ -2165,12 +2211,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerData: {fileID: 11400000, guid: 5c01ba516f39c3d43be55bbd3020f405, type: 2}
-  _floor: {fileID: 1746115130}
   _deadZone: {fileID: 805490487741489638, guid: 30f45143c15149d44af6c7a400622047, type: 3}
   _greenZone: {fileID: 805490487741489638, guid: fcf42d6085366d942afee39219988dcf, type: 3}
   _wallPrefab: {fileID: 805490487741489638, guid: ce067896197bed046aa2497fc5178410, type: 3}
   _ui: {fileID: 1691783847}
-  _animator: {fileID: 878974195}
   _wallMaterial: {fileID: 2100000, guid: 2cbb4b9598e894c4b80743131ca501ab, type: 2}
 --- !u!4 &1468937341
 Transform:
@@ -2303,12 +2347,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf32716f643297b4ba942f1bbdacf2db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _shieldButton: {fileID: 442606467}
   _pauseButton: {fileID: 635695330}
   _resumeButton: {fileID: 780426770}
   _exitButton: {fileID: 247431347}
   _restartButton: {fileID: 1040392203}
   _pauseMenuPanel: {fileID: 2064367672}
+  _animator: {fileID: 878974195}
 --- !u!1 &1743719278
 GameObject:
   m_ObjectHideFlags: 0
