@@ -9,7 +9,7 @@ public sealed class MazeDataGenerator
         _placementThreshold = 0.5f;
     }
 
-    public int[,] FromDimension(int sizeRows, int sizeColumns)
+    public int[,] CreateMazeData(int sizeRows, int sizeColumns)
     {
         int[,] maze = new int[sizeRows, sizeColumns];
 
