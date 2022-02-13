@@ -3,7 +3,6 @@ using UnityEngine.AI;
 
 public sealed class MazeConstructor
 {
-    private const string TAG = "Generated";
     private const string ROOT = "Maze";
     private MazeDataGenerator _dataGenerator;
     private GameObject _wallPrefab;
@@ -31,7 +30,7 @@ public sealed class MazeConstructor
     {
         DisposeOldMaze();
 
-        _data = _dataGenerator.FromDimension(sizeRows, sizeColumns);
+        _data = _dataGenerator.CreateMazeData(sizeRows, sizeColumns);
 
         for (var i = 0; i < sizeRows; i++)
         {
@@ -44,7 +43,6 @@ public sealed class MazeConstructor
 
                 var wall = Object.Instantiate(_wallPrefab);
                 wall.transform.position = new Vector3(i, _wallPositionY, j);
-                wall.tag = TAG;
                 var obstacle = wall.AddComponent<NavMeshObstacle>();
                 obstacle.carving = true;
                 wall.transform.parent = _root.transform;
@@ -56,25 +54,20 @@ public sealed class MazeConstructor
 
         var greenZone = Object.Instantiate(_greenZonePrefab);
         greenZone.transform.position = FindGoalPosition(_data.GetUpperBound(0), _data.GetUpperBound(1));
-        greenZone.tag = TAG;
         greenZone.transform.parent = _root.transform;
 
         for (var i = 0; i < deadZoneQuantity; i++)
         {
             var deadZone = Object.Instantiate(_deadZonePrefab);
             deadZone.transform.position = FindRandomAvailablePosition();
-            deadZone.tag = TAG;
             deadZone.transform.parent = _root.transform;
         }
     }
 
     public void DisposeOldMaze()
     {
-        GameObject[] objects = GameObject.FindGameObjectsWithTag(TAG);
-        foreach (GameObject gameObject in objects)
-        {
-            Object.Destroy(gameObject);
-        }
+        Object.Destroy(_root);
+        _root = new GameObject(ROOT);
     }
 
     private Vector3 FindStartPosition(int rowMax, int columnMax)
