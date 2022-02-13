@@ -13,7 +13,6 @@ public sealed class UIController : MonoBehaviour
     [SerializeField] private Button _resumeButton;
     [SerializeField] private Button _exitButton;
     [SerializeField] private Button _restartButton;
-    [SerializeField] private Button _shieldButton;
     [SerializeField] private GameObject _pauseMenuPanel;
     [SerializeField] private Animator _animator;
 

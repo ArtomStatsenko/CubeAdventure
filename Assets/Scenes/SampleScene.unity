@@ -687,10 +687,10 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 0.96862745, g: 0.94509804, b: 0.5529412, a: 0.5019608}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9254902, b: 0.2627451, a: 1}
+    m_HighlightedColor: {r: 0.9686275, g: 0.9450981, b: 0.5529412, a: 0.5019608}
     m_PressedColor: {r: 0.9607844, g: 0.92549026, b: 0.2627451, a: 1}
     m_SelectedColor: {r: 0.9686275, g: 0.9450981, b: 0.5529412, a: 0.5019608}
-    m_DisabledColor: {r: 0.9607844, g: 0.92549026, b: 0.2627451, a: 0.16470589}
+    m_DisabledColor: {r: 0.9686275, g: 0.9450981, b: 0.5529412, a: 0.16470589}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -1350,7 +1350,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &878974193
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2351,7 +2351,6 @@ MonoBehaviour:
   _resumeButton: {fileID: 780426770}
   _exitButton: {fileID: 247431347}
   _restartButton: {fileID: 1040392203}
-  _shieldButton: {fileID: 0}
   _pauseMenuPanel: {fileID: 2064367672}
   _animator: {fileID: 878974195}
 --- !u!1 &1743719278

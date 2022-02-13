@@ -6,10 +6,12 @@ using UnityEngine.AI;
 public sealed class PlayerView : MonoBehaviour
 {
     public event Action OnDiedEvent;
+    public event Action OnVictoryEvent;
 
     private Material _shieldMaterial;
     private Material _defaultMaterial;
     private Renderer _renderer;
+    private Collider _collider;
     private float _pauseTime;
     private float _deathTime;
     private float _shieldTime;
@@ -23,8 +25,9 @@ public sealed class PlayerView : MonoBehaviour
 
     public void Start()
     {
-        _renderer = GetComponent<Renderer>();
         gameObject.GetOrAddComponent<Rigidbody>();
+        _renderer = GetComponent<Renderer>();
+        _collider = GetComponent<Collider>();
         _isShieldActive = false;
         _isDead = false;
 
@@ -88,16 +91,22 @@ public sealed class PlayerView : MonoBehaviour
             CreateDeathEffect();
             Die();
         }
+
+        if (other.gameObject.TryGetComponent<Exit>(out _) && !_isDead)
+        {
+            Die();
+        }
     }
 
     public void Die()
     {
         if (!_isDead)
         {
-            StartCoroutine(nameof(CallDiedEvent));
+            _collider.enabled = false;
             NavMesh.isStopped = true;
             _renderer.enabled = false;
             _isDead = true;
+            StartCoroutine(nameof(CallDiedEvent));
         }
     }
 

@@ -12,9 +12,8 @@ public sealed class Exit : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.TryGetComponent(out PlayerView player))
+        if (other.gameObject.TryGetComponent<PlayerView>(out _))
         {
-            player.Die();
             CreateVictoryEffect();
             OnVictoryEvent?.Invoke();
         }

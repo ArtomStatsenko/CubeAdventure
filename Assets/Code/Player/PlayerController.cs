@@ -22,6 +22,7 @@ public sealed class PlayerController
         _view.OnDiedEvent += Die;
         OnShieldEnabledEvent += _view.EnableShield;
     }
+
     public void OnDisable()
     {
         _view.OnDiedEvent -= Die;
