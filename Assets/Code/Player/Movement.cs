@@ -22,14 +22,4 @@ public sealed class Movement
         _navMeshAgent.ResetPath();
         _navMeshAgent.SetDestination(new Vector3(exit.x, 1f, exit.z));
     }
-
-    public void EnableMovement()
-    {
-        _navMeshAgent.isStopped = false;
-    }
-
-    public void DisableMovement()
-    {
-        _navMeshAgent.isStopped = true;
-    }
 }

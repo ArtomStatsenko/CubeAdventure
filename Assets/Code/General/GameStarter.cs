@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -35,15 +36,24 @@ public sealed class GameStarter : MonoBehaviour
 
     private void OnEnabled()
     {
-        _ui.OnPausedEvent += _animatorController.PlayStartTransition;
-        _ui.OnPausedEvent += _player.DisableMovement;
-        _ui.OnResumedEvent += _animatorController.PlayEndTransition;
-        _ui.OnResumedEvent += _player.EnableMovement;
+        _ui.OnPausedEvent += Pause;
+        _ui.OnResumedEvent += Resume;
         _ui.OnRestartedEvent += ReloadLevelImmediately;
         _ui.OnRestartedEvent += _player.KillPlayer;
         _ui.OnShieldEnabledEvent += _player.EnableShield;
     }
 
+    private void Resume()
+    {
+        Time.timeScale = 1f;
+        _animatorController.PlayEndTransition();
+    }
+
+    private void Pause()
+    {
+        Time.timeScale = 0f;
+        _animatorController.PlayStartTransition();
+    }
 
     private void ReloadLevel()
     {

@@ -53,15 +53,4 @@ public sealed class PlayerController
     {
         OnShieldEnabledEvent?.Invoke(isEnabled);
     }
-
-    public void EnableMovement()
-    {
-        _movement.EnableMovement();
-    }
-
-    public void DisableMovement()
-    {
-        _movement.DisableMovement();
-
-    }
 }
