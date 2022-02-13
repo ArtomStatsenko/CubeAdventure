@@ -45,7 +45,8 @@ public sealed class MazeConstructor
                 var wall = Object.Instantiate(_wallPrefab);
                 wall.transform.position = new Vector3(i, _wallPositionY, j);
                 wall.tag = TAG;
-                wall.AddComponent<NavMeshObstacle>();
+                var obstacle = wall.AddComponent<NavMeshObstacle>();
+                obstacle.carving = true;
                 wall.transform.parent = _root.transform;
                 _data[i, j] = 1;
             }

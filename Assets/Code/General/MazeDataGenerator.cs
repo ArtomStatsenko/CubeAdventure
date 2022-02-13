@@ -6,7 +6,7 @@ public sealed class MazeDataGenerator
 
     public MazeDataGenerator()
     {
-        _placementThreshold = 0.7f;
+        _placementThreshold = 0.5f;
     }
 
     public int[,] FromDimension(int sizeRows, int sizeColumns)
